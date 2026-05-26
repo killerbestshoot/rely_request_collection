@@ -1,0 +1,179 @@
+info:
+  name: WALLET_CREATION
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{my_cloud_url}}/wallets/user/init/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: label
+        value: vakans
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: WALLET_CREATION_DUPLICATION
+    request:
+      url: http://127.0.0.1:8003/v1/wallets
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: token
+            value: "{{access_token}}"
+          - name: currency
+            value: USD
+          - name: user_id
+            value: kjer
+            disabled: true
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Thu, 09 Apr 2026 04:32:10 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.13.9
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, POST, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "144"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 4006,
+                  "error_type": "DUPLICATE_RESOURCE",
+                  "error_message": "Wallet data violates a persistence constraint."
+              }
+          }
+  - name: WALLET_CREATION
+    request:
+      url: http://127.0.0.1:8003/v1/wallets
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: token
+            value: "{{access_token}}"
+          - name: currency
+            value: USD
+          - name: user_id
+            value: kjer
+            disabled: true
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Date
+          value: Thu, 09 Apr 2026 04:35:39 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.13.9
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, POST, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "290"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "wallet_id": "69582a91-d298-45f7-8104-b9316d135fe3",
+              "user_id": "ae73fde9-f128-4f43-aa87-830f9eb38309",
+              "currency": "USD",
+              "balance": "0.00",
+              "available_balance": "0.00",
+              "locked_balance": "0.00",
+              "status": "active",
+              "created_at": "2026-04-09T04:35:39.109318Z",
+              "updated_at": "2026-04-09T04:35:39.109378Z"
+          }
+  - name: WALLET_CREATION
+    request:
+      url: http://127.0.0.1:8004/v1/wallets/user/init/
+      method: GET
+      params:
+        - name: user_id
+          value: urt4
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: token
+            value: "{{access_token}}"
+            disabled: true
+          - name: currency
+            value: USD
+            disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Fri, 08 May 2026 06:05:11 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.13.9
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, POST, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "130"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "wallet_id": "6fdebb85-a6a0-4e49-b884-2cc007ee3534",
+                  "balance": "0.00",
+                  "currency": "HTG",
+                  "wallet_type": "SAVINGS",
+                  "status": "active"
+              }
+          ]

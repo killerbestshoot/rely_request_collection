@@ -1,0 +1,69 @@
+info:
+  name: "request reset link "
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/reset-password/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: identifier
+        value: "{{usermail}}"
+      - name: identifier
+        value: "+528148723812"
+        disabled: true
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: request reset link
+    request:
+      url: "{{local_base_url}}/auth/reset-password/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: identifier
+            value: "{{usermail}}"
+            disabled: true
+          - name: identifier
+            value: "+528148723812"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Mon, 02 Mar 2026 20:44:44 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "102"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "message": "If an account exists, you will receive a password reset email."
+              }
+          }

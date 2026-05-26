@@ -1,0 +1,275 @@
+info:
+  name: SET_USER_CONTACT
+  type: http
+  seq: 15
+
+http:
+  method: PATCH
+  url: "{{local_base_url}}/v1/me/contact/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: phone_number
+        value: "+50946555796"
+      - name: emergency_contact_name
+        value: Rafa
+      - name: emergency_email
+        value: rafa@gmail.come
+      - name: address
+        value: lensdnd bwe wei owiewoieb osibas 90
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: New Request
+    request:
+      url: "{{local_base_url}}/v1/me/contact/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: phone_number
+            value: "+50946555695"
+          - name: emergency_contact_name
+            value: Nance jean Yvenord Bastien
+          - name: emergency_email
+            value: nancejean998@gmail.com
+          - name: address
+            value: Nan Lundy jeremie haiti
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Sun, 22 Jun 2025 06:28:36 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.9
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: GET, PUT, PATCH, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "194"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "phone_number": "+50946555695",
+              "phone_number_verified": false,
+              "emergency_contact_name": "Nance jean Yvenord Bastien",
+              "emergency_email": "nancejean998@gmail.com",
+              "address": "Nan Lundy jeremie haiti"
+          }
+  - name: PATCH_USER_CONTACT
+    request:
+      url: "{{local_base_url}}/v1/me/contact/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: phone_number
+            value: "+50946555796"
+          - name: emergency_contact_name
+            value: Lourdy Nnyca Ivenord Bastien
+          - name: emergency_email
+            value: lourdybastien7@gmail.com
+          - name: address
+            value: ""
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 16:02:01 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: GET, PUT, PATCH, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "175"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "phone_number": "+50946555796",
+              "phone_number_verified": false,
+              "emergency_contact_name": "Lourdy Nnyca Ivenord Bastien",
+              "emergency_email": "lourdybastien7@gmail.com",
+              "address": ""
+          }
+  - name: 2013_USERNAME_ONLY_LETTER_ARE_ALLOWED
+    request:
+      url: "{{local_base_url}}/v1/me/contact/"
+      method: PUT
+      body:
+        type: form-urlencoded
+        data:
+          - name: phone_number
+            value: "+50946555796"
+          - name: emergency_contact_name
+            value: Lourdy Nnyca Ivenord Bastien .
+          - name: emergency_email
+            value: lourdybastien7@gmail.com
+          - name: address
+            value: ""
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 16:04:40 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: GET, PUT, PATCH, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "1781"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "Please check submitted data and try again.",
+              "details": "Username can only contain letters",
+              "error_code": 2013,
+              "trace": "Traceback (most recent call last):\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/views.py\", line 506, in dispatch\n    response = handler(request, *args, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/generics.py\", line 259, in put\n    return self.update(request, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/mixins.py\", line 67, in update\n    serializer.is_valid(raise_exception=True)\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 223, in is_valid\n    self._validated_data = self.run_validation(self.initial_data)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 442, in run_validation\n    value = self.to_internal_value(data)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 501, in to_internal_value\n    validated_value = validate_method(validated_value)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/Serializers/ModelsSerializers.py\", line 226, in validate_emergency_contact_name\n    raise RegistrationAPIException(\nqMoney.APP.errors.registration_errors.RegistrationAPIException: Username can only contain letters\n"
+          }
+  - name: PUT_USER_CONTACT
+    request:
+      url: "{{local_base_url}}/v1/me/contact/"
+      method: PUT
+      body:
+        type: form-urlencoded
+        data:
+          - name: phone_number
+            value: +50946555790#
+          - name: emergency_contact_name
+            value: Lourdy Nnyca Ivenord Bastien
+          - name: emergency_email
+            value: lourdybastien7@gmail.com
+          - name: address
+            value: rtb_
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 16:11:11 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: GET, PUT, PATCH, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "179"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "phone_number": "+50946555790",
+              "phone_number_verified": false,
+              "emergency_contact_name": "Lourdy Nnyca Ivenord Bastien",
+              "emergency_email": "lourdybastien7@gmail.com",
+              "address": "rtb_"
+          }
+  - name: 2006_PHONE_NUM_FORMAT_NOT_ALLOWED
+    request:
+      url: "{{local_base_url}}/v1/me/contact/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: phone_number
+            value: +509465557rt
+          - name: emergency_contact_name
+            value: Lourdy Nnyca Ivenord Bastien
+          - name: emergency_email
+            value: lourdybastien7@gmail.com
+          - name: address
+            value: rtb_
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 16:17:43 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: GET, PUT, PATCH, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "2105"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "Please check submitted data and try again.",
+              "details": "Phone number must be in the format +<country_code><number> (e.g., +1234567890)",
+              "error_code": 2006,
+              "trace": "Traceback (most recent call last):\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/views.py\", line 506, in dispatch\n    response = handler(request, *args, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/generics.py\", line 262, in patch\n    return self.partial_update(request, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/mixins.py\", line 82, in partial_update\n    return self.update(request, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/mixins.py\", line 67, in update\n    serializer.is_valid(raise_exception=True)\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 223, in is_valid\n    self._validated_data = self.run_validation(self.initial_data)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 442, in run_validation\n    value = self.to_internal_value(data)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/.venv/lib/python3.12/site-packages/rest_framework/serializers.py\", line 501, in to_internal_value\n    validated_value = validate_method(validated_value)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/Serializers/ModelsSerializers.py\", line 202, in validate_phone_number\n    raise RegistrationAPIException(\nqMoney.APP.errors.registration_errors.RegistrationAPIException: Phone number must be in the format +<country_code><number> (e.g., +1234567890)\n"
+          }

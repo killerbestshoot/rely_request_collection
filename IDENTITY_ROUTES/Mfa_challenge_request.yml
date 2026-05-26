@@ -1,0 +1,152 @@
+info:
+  name: Mfa_challenge_request
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+  params:
+    - name: otp
+      value: 1234p
+      type: query
+      disabled: true
+    - name: token
+      value: sd
+      type: query
+      disabled: true
+  body:
+    type: form-urlencoded
+    data:
+      - name: otp
+        value: "159374"
+      - name: ""
+        value: eewe
+        disabled: true
+  auth:
+    type: bearer
+    token: "{{challenge_access}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Mfa_challenge_request_succes
+    request:
+      url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+      method: POST
+      params:
+        - name: otp
+          value: 1234p
+          type: query
+          disabled: true
+        - name: token
+          value: sd
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "159374"
+          - name: challenge_token
+            value: eewe
+            disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Wed, 04 Mar 2026 03:53:29 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "1152"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "user": {
+                  "id": "5630c678-0ea9-4297-82c0-139e18a7a249",
+                  "email": "killerbesthoot@gmail.com",
+                  "account_type": "STANDARD",
+                  "grade": 1,
+                  "role": "user"
+              },
+              "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWx5LmlkZW50aXR5Iiwic3ViIjoiNTYzMGM2NzgtMGVhOS00Mjk3LTgyYzAtMTM5ZTE4YTdhMjQ5IiwiYXVkIjoicmVseS5tb2JpbGUiLCJ0ZW5hbnRfaWQiOiI2NjQ3MjVkZC0wMGIyLTRkMmEtYTcxOC1hNjViNTc0MGU3YWIiLCJqdGkiOiJkM2IzYmVkNy0xMzcwLTQxNjItYTcwYi1jMTMzNTgyY2M5YmMiLCJzZXNzaW9uX2lkIjoiYWU0NTc0ODUtZWNjMy00MzVlLWI4M2YtZWU1M2M5MGQzYzUwIiwiZGV2aWNlX2lkIjoiNmUyMjg1NDctMGY2Mi00MDNiLWI1YTQtYzhlNWM4NmE2YzQxIiwic2NvcGUiOlsidHJhbnNmZXI6Y3JlYXRlIl0sInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzI1OTY0MDksImV4cCI6MTc3MjU5NjcwOX0.RJvNm98ErqkuHng3lx5BPHYxPqfdordpP5IMPXKaHlqDprz-dJw5bw2Z4vYm0MO2DF5dpQY5lyFrkIkPgkULYSBfLEWKsJZz6aXAGzDPF2jl9RuQMEZBEx7_uH0rjsBK0kPw247F4imxRtf8WhSjwsOoGEmjRYsWrtXQA4xagQWZQZ2Nv-Zve3Oai6PaZuhwmuY1oY62ZNJ8dk4gh8se60-WjXl388l93xOBHhFiPM2Or9SVxKHoUgge34GhKQsiY3ilzJo8NuNMLTkTCS76Sj0QWFNo6qpJP1F0iOW0n48gpiaqc7um-sJYksLA2x8yG9L-E8OB8B7GPw3nIBwZQQ",
+              "refresh_token": "AwliMCN2D0lYhNd_Yces89yHMgoVXTDyqUnRAPKWgiJVT-LiNPrC9RE8ftTFQSN8h3jIjxdsvsuLOl6A9wQMtQ"
+          }
+  - name: Mfa_challenge_request_failed_3060
+    request:
+      url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+      method: POST
+      params:
+        - name: otp
+          value: 1234p
+          type: query
+          disabled: true
+        - name: token
+          value: sd
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "159374"
+          - name: challenge_token
+            value: eewe
+            disabled: true
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Wed, 04 Mar 2026 03:56:38 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "158"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3060,
+                  "error_type": "AUTH_ERROR",
+                  "error_message": "Invalid or expired OTP provided for MFA challenge, please try again."
+              }
+          }

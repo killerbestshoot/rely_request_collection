@@ -1,0 +1,67 @@
+info:
+  name: UnFreeze_wallet_user/wallets/77661988-5ec6-4e0a-be81-58bc682a197a/unfreeze/
+  type: http
+  seq: 12
+
+http:
+  method: PATCH
+  url: "{{local_base_url}}/wallets/user/wallets/77661988-5ec6-4e0a-be81-58bc682a197a/unfreeze/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: unfreeze_wallet_77661988-5ec6-4e0a-be81-58bc682a197a
+    request:
+      url: "{{local_base_url}}/wallets/user/wallets/77661988-5ec6-4e0a-be81-58bc682a197a/unfreeze/"
+      method: PATCH
+    response:
+      status: 202
+      statusText: Accepted
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Sun, 24 May 2026 07:01:24 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "87"
+        - name: connection
+          value: keep-alive
+        - name: vary
+          value: Accept
+        - name: allow
+          value: PATCH, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "410"
+        - name: x-kong-proxy-latency
+          value: "0"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: 4893b223ae184f53c926f36af4de0460
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "wallet_id": "77661988-5ec6-4e0a-be81-58bc682a197a",
+            "balance": "0.00",
+            "status": "active"
+          }

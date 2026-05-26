@@ -1,0 +1,153 @@
+info:
+  name: ACTIVATE_MFA
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/user-enable/mfa/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: is_mfa_enable
+        value: "true"
+        disabled: true
+  auth:
+    type: bearer
+    token: "{{challenge_access}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: ACTIVATE_MFA
+    request:
+      url: "{{local_base_url}}/auth/user-enable/mfa/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: is_mfa_enabled
+            value: "True"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "118"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "97"
+        - name: RateLimit-Reset
+          value: "8"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "97"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Fri, 13 Mar 2026 11:26:52 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "41"
+        - name: X-Kong-Proxy-Latency
+          value: "3"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: d116ea2ede70ed357c3451220b0bd23b
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3061,
+                  "error_type": "SYSTEM_ERROR",
+                  "error_message": "Mfa Enrollement has failed"
+              }
+          }
+  - name: MFA_ENROLLEMENT_FAILED
+    request:
+      url: "{{local_base_url}}/auth/user-enable/mfa/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: is_mfa_enabled
+            value: "True"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "195"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Reset
+          value: "49"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Sat, 14 Mar 2026 00:16:10 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "191"
+        - name: X-Kong-Proxy-Latency
+          value: "8"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: f671ef21811cbb146e0c225391fbd313
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3061,
+                  "error_type": "MFA_ENROLLEMENT_FAILED",
+                  "error_message": "MFA enrollment has failed. The user must have a verified phone number to enable this feature."
+              }
+          }

@@ -1,0 +1,281 @@
+info:
+  name: Get user data
+  type: http
+  seq: 17
+
+http:
+  method: GET
+  url: "{{local_base_url}}/v1/user/me/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Get user data
+    request:
+      url: "{{live_base_url}}/v1/user/show/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Server
+          value: nginx/1.22.1
+        - name: Date
+          value: Sun, 22 Jun 2025 04:04:35 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "1256"
+        - name: Connection
+          value: keep-alive
+        - name: Allow
+          value: GET, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: Strict-Transport-Security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+              "username": "Nance9980",
+              "email": "killerbestshoot@gmail.com",
+              "user_type": null,
+              "user_gender": null,
+              "email_verified": true,
+              "email_verified_at": null,
+              "created_at": "2025-05-23T08:37:06.970495Z",
+              "updated_at": "2025-05-23T08:37:07.193598Z",
+              "user_profile": {
+                  "first_name": "NANCE JEAN YVENORD",
+                  "last_name": "BASTIEN",
+                  "gender": "unknown",
+                  "date_of_birth": "1998-04-01",
+                  "profile_picture_url": "/relytransfer/ed9c306c7bda48e6aa92f80f886a8f6a.jpg"
+              },
+              "user_contact": {
+                  "phone_number": null,
+                  "phone_number_verified": false,
+                  "emergency_contact_name": null,
+                  "emergency_email": null,
+                  "address": null
+              },
+              "user_document": {
+                  "nationality": "HT",
+                  "document_number": "H00276647",
+                  "date_of_issue": "2021-12-13",
+                  "date_of_expiry": "2031-12-13",
+                  "document_type": "ID_CARD"
+              },
+              "user_role": {
+                  "role": "partner",
+                  "status": "inactive"
+              },
+              "user_activity": {
+                  "last_login": "2025-06-22T03:57:43.454593Z",
+                  "activity_description": "Nance9980 logged in",
+                  "ip_address": "189.175.99.16",
+                  "activity_type": "login",
+                  "activity_timestamp": "2025-06-22T03:57:43.454593Z"
+              },
+              "user_kyc_status": {
+                  "is_kyc_verified": true,
+                  "verification_date": "2025-05-24T06:44:02.478296Z",
+                  "verification_notes": "KYC successfully verified"
+              },
+              "user_token": {
+                  "user_uuid": "38635841-6e98-4f3f-af13-f03351ef5b4f",
+                  "secret_key": "sk_BQqhK7DjCOHHjb9419N3NxhSDm0AOz88wjPcPIxwAT4",
+                  "token": null
+              }
+          }
+  - name: Get user data
+    request:
+      url: "{{live_base_url}}/v1/user/show/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Server
+          value: nginx/1.22.1
+        - name: Date
+          value: Sun, 22 Jun 2025 06:28:44 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "1331"
+        - name: Connection
+          value: keep-alive
+        - name: Allow
+          value: GET, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: Strict-Transport-Security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+              "username": "Nance9980",
+              "email": "killerbestshoot@gmail.com",
+              "user_type": null,
+              "user_gender": null,
+              "email_verified": true,
+              "email_verified_at": null,
+              "created_at": "2025-05-23T08:37:06.970495Z",
+              "updated_at": "2025-05-23T08:37:07.193598Z",
+              "user_profile": {
+                  "first_name": "NANCE JEAN YVENORD",
+                  "last_name": "BASTIEN",
+                  "gender": "unknown",
+                  "date_of_birth": "1998-04-01",
+                  "profile_picture_url": "/relytransfer/ed9c306c7bda48e6aa92f80f886a8f6a.jpg"
+              },
+              "user_contact": {
+                  "phone_number": "+50946555695",
+                  "phone_number_verified": false,
+                  "emergency_contact_name": "Nance jean Yvenord Bastien",
+                  "emergency_email": "nancejean998@gmail.com",
+                  "address": "Nan Lundy jeremie haiti"
+              },
+              "user_document": {
+                  "nationality": "HT",
+                  "document_number": "H00276647",
+                  "date_of_issue": "2021-12-13",
+                  "date_of_expiry": "2031-12-13",
+                  "document_type": "ID_CARD"
+              },
+              "user_role": {
+                  "role": "partner",
+                  "status": "inactive"
+              },
+              "user_activity": {
+                  "last_login": "2025-06-22T06:22:25.324482Z",
+                  "activity_description": "Nance9980 logged in",
+                  "ip_address": "189.175.99.16",
+                  "activity_type": "login",
+                  "activity_timestamp": "2025-06-22T06:22:25.324482Z"
+              },
+              "user_kyc_status": {
+                  "is_kyc_verified": true,
+                  "verification_date": "2025-05-24T06:44:02.478296Z",
+                  "verification_notes": "KYC successfully verified"
+              },
+              "user_token": {
+                  "user_uuid": "38635841-6e98-4f3f-af13-f03351ef5b4f",
+                  "secret_key": "sk_BQqhK7DjCOHHjb9419N3NxhSDm0AOz88wjPcPIxwAT4",
+                  "token": null
+              }
+          }
+
+docs: |-
+  ### Overview
+
+  Returns the currently authenticated user’s profile and related information, including basic user fields plus nested contact, document, role, recent activity, and KYC verification status. Use this endpoint to fetch the logged-in user’s full account context based on the active access token.
+
+  ### Authentication
+
+  - This endpoint **requires authorization** via a Bearer token.
+      
+  - Include the token in the `Authorization` header as:
+      
+      ``` http
+        Authorization: Bearer {{access_token}}
+      
+       ```
+      
+
+  ### Request details
+
+  - **Method:** `GET`
+      
+  - **URL:** `{{local_base_url}}/v1/user/show/`
+      
+  - **Request body:** None. No body fields are required.
+      
+  - The only required input is a valid access token passed in the `Authorization` header.
+      
+
+  ---
+
+  **Example 200 response:**
+
+  ``` json
+  {
+    "user_uuid": "4d0eacfe-0ff1-4c8c-a5fd-373c556bfad8",
+    "username": "system2",
+    "email": "meetleiderstephana@gmail.com",
+    "user_type": null,
+    "user_gender": null,
+    "email_verified": true,
+    "email_verified_at": null,
+    "branch": null,
+    "main_user_name": null,
+    "main_user_type": null,
+    "is_active": true,
+    "created_at": "2025-07-05T21:06:15.890594Z",
+    "updated_at": "2025-07-05T21:06:16.620668Z",
+    "user_profile": {
+      "first_name": "NANCE JEAN YVENORD",
+      "last_name": "BASTIEN",
+      "gender": "unknown",
+      "date_of_birth": "1998-04-01",
+      "profile_picture_url": "/relytransfer/175fdfc98f5b4719b2a106e562..."
+    },
+    "user_contact": {
+      "phone_number": null,
+      "phone_number_verified": false,
+      "emergency_contact_name": null,
+      "emergency_email": null,
+      "address": null
+    },
+    "user_document": {
+      "nationality": "HT",
+      "document_number": "H00276647",
+      "date_of_issue": null,
+      "date_of_expiry": "2031-12-13",
+      "document_type": "ID_CARD"
+    },
+    "user_role": {
+      "role": "merchant",
+      "status": "active"
+    },
+    "user_activity": {
+      "last_login": "2026-01-04T21:29:04.880570Z",
+      "activity_description": "system2 logged in",
+      "ip_address": "127.0.0.1",
+      "activity_type": "login",
+      "activity_timestamp": "2026-01-04T21:29:04.880570Z"
+    },
+    "user_kyc_status": {
+      "is_kyc_verified": true,
+      "verification_date": "2025-07-05T23:38:53.898106Z",
+      "verification_notes": "KYC successfully verified"
+    }
+  }
+
+   ```

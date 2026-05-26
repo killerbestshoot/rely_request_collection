@@ -1,0 +1,277 @@
+info:
+  name: login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{my_cloud_url}}/identity/auth/login/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: email
+        value: "{{usermail}}"
+      - name: password
+        value: "{{userpass}}"
+
+runtime:
+  variables:
+    - name: my_cloud_url
+      value: http://192.168.1.136:8000/v1
+  scripts:
+    - type: after-response
+      code: |-
+        // parse the response to extract the access_token
+        const responseBody = res.getBody();
+        if (responseBody.success === true) {
+            const token = responseBody.access_token.token || responseBody?.tokens?.access_token;
+
+            if (token) {
+                bru.setEnvVar("access_token", token);
+                const refresh = responseBody.refresh_token || responseBody?.tokens?.refresh_token;
+                if (refresh) bru.setEnvVar("refresh_token", refresh);
+            }
+        }
+
+        // Store the challenge_token in the ACTIVE ENVIRONMENT if it exists
+        if (responseBody.challenge_token) {
+            bru.setEnvVar("challenge_access", responseBody.challenge_token);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 3001_UNABLE_TO_login
+    request:
+      url: "{{local_base_url}}/v1/login/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 19:52:03 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "566"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "Unable to log in. 🚫",
+              "details": "Invalid email or password.",
+              "error_code": 3001,
+              "trace": "Traceback (most recent call last):\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/View/LoginView.py\", line 26, in post\n    user = serializer.validate(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/Serializers/user_login_serializer.py\", line 37, in validate\n    raise AuthAPIException(\nqMoney.APP.errors.authentification_error.AuthAPIException: Invalid email or password.\n"
+          }
+  - name: 3006_ACCOUNT_NOT_VERIFIED
+    request:
+      url: "{{local_base_url}}/v1/login/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+    response:
+      status: 403
+      statusText: Forbidden
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 19:53:28 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "562"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "Unable to log in. 🚫",
+              "details": "Account is not verified.",
+              "error_code": 3006,
+              "trace": "Traceback (most recent call last):\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/View/LoginView.py\", line 26, in post\n    user = serializer.validate(request)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/the_kid/dev/qmoney/qMoney/modules/qUsers/Serializers/user_login_serializer.py\", line 44, in validate\n    raise AuthAPIException(\nqMoney.APP.errors.authentification_error.AuthAPIException: Account is not verified.\n"
+          }
+  - name: login_succes
+    request:
+      url: "{{local_base_url}}/auth/login/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Mon, 02 Feb 2026 02:40:52 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept, Cookie
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "1062"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "user": {
+                  "id": "5762ae76-4d8e-4fa2-812c-b7107c4b4571",
+                  "email": "rely_api98@relyfinancials.cloud",
+                  "account_type": "STANDARD",
+                  "grade": 1,
+                  "role": "user"
+              },
+              "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NzYyYWU3Ni00ZDhlLTRmYTItODEyYy1iNzEwN2M0YjQ1NzEiLCJlbWFpbCI6InJlbHlfYXBpOThAcmVseWZpbmFuY2lhbHMuY2xvdWQiLCJyb2xlIjpudWxsLCJncmFkZSI6bnVsbCwidHlwZSI6bnVsbCwiYnVzaW5lc3NfaWQiOm51bGwsInBsYWZvbmQiOm51bGwsImN1cnJlbmN5IjpudWxsLCJreWMiOm51bGwsInBlcm1pc3Npb25zIjpbXSwicHJlZmVyZW5jZXMiOnt9LCJpYXQiOjE3NzAwMDAwNTIsImV4cCI6MTc3MDAwMDk1MiwiaXNzIjoicmVseS5pZGVudGl0eSIsImF1ZCI6InJlbHkucGxhdGZvcm0ifQ.BvFBotbcnG4nVxARvnLUMEvtRa-ARi6LNT8lWAiJCH038sRGtNVfFwVLORW5zviJbsjQdmWl3o9BKyPcpM4DA8KJs-FTA3duC_IVPEeaP7oB1ySmfS5iembNNR3Y-MhReO5BWc0V4-l-AZyV5DbhxYfBufKyx_2ZiH-kIboXeTeMqTn_NP_7-Vem1nXGJxBmM-J8WvWugO-NEyl6-1jziBTw3N9pRujBzAQYC_XWelnXQizVGliDEyXNA2CDoR6XykPB4qnUevu-VrY04STxPP9GednC-nygqHjwHjaxXBEE_w7sw41gCeHHjM8jPbAC-M6UZOsqxK4aC_qRKGPGjQ",
+              "refresh_token": "M_jmaomftK7LDh4aVe7pAj2eGBjnym9Nki0juHmz3EOUtEeSQlFiiS3UkEwdL8fEg5iS15MsuBNJ723fNMOcOQ"
+          }
+
+docs: |-
+  ### Login – Authenticate User
+
+  Authenticates an existing user and returns access and refresh tokens.
+
+  **URL**  
+  `POST {{local_base_url}}/v1/login/`
+
+  **Method**  
+  `POST`
+
+  **Authentication**
+
+  - This endpoint does **not** require an existing access token.
+      
+  - It is typically used to obtain new tokens using valid user credentials.
+      
+
+  **Required body (x-www-form-urlencoded)**
+
+  - `email` – User email address associated with the account
+      
+  - `password` – Account password
+      
+
+  **Typical successful response**
+
+  - **Status:** `200 OK`
+      
+  - **Body (JSON):**
+      
+      - `success` – Boolean, `true` when login is successful
+          
+      - `tokens.access_token` – Short‑lived token used to authenticate subsequent API calls
+          
+      - `tokens.refresh_token` – Longer‑lived token used to obtain new access tokens
+          
+      - Other response fields may include additional user or session information depending on server configuration
+          
+
+  **Example (200 OK)**
+
+  ``` json
+  {
+    "success": true,
+    "tokens": {
+      "access_token": "<jwt-access-token>",
+      "refresh_token": "<jwt-refresh-token>"
+    }
+  }
+
+   ```
+
+  **Error responses / Notes**
+
+  - **403 Forbidden – Account not verified**
+      
+      - Example body:
+          
+          ``` json
+                  {
+                    "success": false,
+                    "hint": "Unable to log in. 🚫",
+                    "details": "Account is not verified.",
+                    "error_code": 3006
+                  }
+          
+           ```
+          
+      - This typically indicates the user must verify their account (for example, via email) before logging in.
+          
+  - **401 Forbidden – Invalid email or password.**
+      
+      - Example body:
+          
+          ``` json
+                  {
+                    "success": false,
+                    "hint": "Unable to log in. 🚫",
+                    "details": "Invalid email or password.",
+                    "error_code": 3001
+                  }
+          
+           ```
+          
+      - This typically indicates the user must provides the correct credentials (email, password) before logging in.
+          
+
+  - Other 4xx responses may occur for invalid credentials or malformed input. Check the response body for additional error details.

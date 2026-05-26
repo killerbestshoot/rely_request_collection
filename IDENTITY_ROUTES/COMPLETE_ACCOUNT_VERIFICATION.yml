@@ -1,0 +1,90 @@
+info:
+  name: COMPLETE_ACCOUNT_VERIFICATION
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/email-verification/complete/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: otp
+        value: "239358"
+      - name: challenge_id
+        value: "{{challenge_id}}"
+  auth:
+    type: bearer
+    token: "{{registration_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: COMPLETE_ACCOUNT_VERIFICATION
+    request:
+      url: "{{local_base_url}}/auth/email-verification/complete/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "204067"
+          - name: challenge_id
+            value: "{{challenge_id}}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "84"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Reset
+          value: "17"
+        - name: date
+          value: Wed, 29 Apr 2026 03:26:42 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "457"
+        - name: X-Kong-Proxy-Latency
+          value: "1"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 0b7f557550df5324f60f4d736e5e9d54
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "message": "Your account has been successfully verified."
+              }
+          }

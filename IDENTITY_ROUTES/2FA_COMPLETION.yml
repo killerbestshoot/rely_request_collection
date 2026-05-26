@@ -1,0 +1,320 @@
+info:
+  name: 2FA_COMPLETION
+  type: http
+  seq: 14
+
+http:
+  method: POST
+  url: "{{local_base_url}}/identity/auth/verify-mfa/challenge/"
+  params:
+    - name: otp
+      value: "755710"
+      type: query
+      disabled: true
+    - name: token
+      value: sd
+      type: query
+      disabled: true
+  body:
+    type: form-urlencoded
+    data:
+      - name: otp
+        value: "497812"
+      - name: ""
+        value: eewe
+        disabled: true
+  auth:
+    type: bearer
+    token: "{{challenge_access}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        // Parse response safely
+        let responseBody = {};
+        try {
+          responseBody = res.getBody();
+        } catch (e) {
+          responseBody = {};
+        }
+
+        // --- Basic assertions ---
+        test("Status code is 200", function () {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Response is JSON", function () {
+          expect(res.getHeader("Content-Type") || "").to.match(/application\/json/i);
+        });
+
+        // --- Token extraction (backward compatible) ---
+        // Supported shapes:
+        // 1) NEW: { access_token: { token: "...", exp: "..." }, refresh_token: "..." }
+        // 2) OLD: { access_token: "...", refresh_token: "..." }
+        // 3) OLD: { tokens: { access_token: "...", refresh_token: "..." } }
+        // 4) OLD: { access_token: "..." } or { tokens: { access_token: "..." } }
+
+        const success = responseBody.success === true;
+
+        let accessToken;
+        let accessTokenExp;
+
+        // access_token can be string or object { token, exp }
+        if (typeof responseBody.access_token === "string") {
+          accessToken = responseBody.access_token;
+        } else if (responseBody.access_token && typeof responseBody.access_token === "object") {
+          accessToken = responseBody.access_token.token;
+          accessTokenExp = responseBody.access_token.exp;
+        }
+
+        // tokens.access_token fallback
+        if (!accessToken) {
+          accessToken = responseBody?.tokens?.access_token;
+        }
+
+        // exp might also exist in nested tokens shape (best-effort)
+        if (!accessTokenExp) {
+          accessTokenExp = responseBody?.tokens?.access_token_exp || responseBody?.tokens?.exp;
+        }
+
+        // refresh_token can be string or nested
+        const refreshToken = responseBody.refresh_token || responseBody?.tokens?.refresh_token;
+
+        // Store tokens in ACTIVE ENVIRONMENT if login was successful
+        if (success) {
+          if (accessToken) {
+            bru.setEnvVar("access_token", accessToken);
+          }
+
+          if (refreshToken) {
+            bru.setEnvVar("refresh_token", refreshToken);
+          }
+
+          // Optional: store exp too if present
+          if (accessTokenExp) {
+            bru.setEnvVar("access_token_exp", accessTokenExp);
+          }
+        }
+
+        // Keep existing challenge_token handling
+        if (responseBody.challenge_token) {
+          bru.setEnvVar("challenge_access", responseBody.challenge_token);
+        }
+
+        // --- Assertions that token was captured when success is true ---
+        test("When success=true, access_token is present", function () {
+          if (success) {
+            expect(accessToken, "Expected access_token to be present when success=true").to.be.a("string").and.not.be.empty;
+          } else {
+            // Don't fail the test suite for non-success responses
+            expect(true).to.equal(true);
+          }
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Mfa_challenge_request_succes
+    request:
+      url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+      method: POST
+      params:
+        - name: otp
+          value: 1234p
+          type: query
+          disabled: true
+        - name: token
+          value: sd
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "159374"
+          - name: challenge_token
+            value: eewe
+            disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Wed, 04 Mar 2026 03:53:29 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "1152"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "user": {
+                  "id": "5630c678-0ea9-4297-82c0-139e18a7a249",
+                  "email": "killerbesthoot@gmail.com",
+                  "account_type": "STANDARD",
+                  "grade": 1,
+                  "role": "user"
+              },
+              "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWx5LmlkZW50aXR5Iiwic3ViIjoiNTYzMGM2NzgtMGVhOS00Mjk3LTgyYzAtMTM5ZTE4YTdhMjQ5IiwiYXVkIjoicmVseS5tb2JpbGUiLCJ0ZW5hbnRfaWQiOiI2NjQ3MjVkZC0wMGIyLTRkMmEtYTcxOC1hNjViNTc0MGU3YWIiLCJqdGkiOiJkM2IzYmVkNy0xMzcwLTQxNjItYTcwYi1jMTMzNTgyY2M5YmMiLCJzZXNzaW9uX2lkIjoiYWU0NTc0ODUtZWNjMy00MzVlLWI4M2YtZWU1M2M5MGQzYzUwIiwiZGV2aWNlX2lkIjoiNmUyMjg1NDctMGY2Mi00MDNiLWI1YTQtYzhlNWM4NmE2YzQxIiwic2NvcGUiOlsidHJhbnNmZXI6Y3JlYXRlIl0sInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NzI1OTY0MDksImV4cCI6MTc3MjU5NjcwOX0.RJvNm98ErqkuHng3lx5BPHYxPqfdordpP5IMPXKaHlqDprz-dJw5bw2Z4vYm0MO2DF5dpQY5lyFrkIkPgkULYSBfLEWKsJZz6aXAGzDPF2jl9RuQMEZBEx7_uH0rjsBK0kPw247F4imxRtf8WhSjwsOoGEmjRYsWrtXQA4xagQWZQZ2Nv-Zve3Oai6PaZuhwmuY1oY62ZNJ8dk4gh8se60-WjXl388l93xOBHhFiPM2Or9SVxKHoUgge34GhKQsiY3ilzJo8NuNMLTkTCS76Sj0QWFNo6qpJP1F0iOW0n48gpiaqc7um-sJYksLA2x8yG9L-E8OB8B7GPw3nIBwZQQ",
+              "refresh_token": "AwliMCN2D0lYhNd_Yces89yHMgoVXTDyqUnRAPKWgiJVT-LiNPrC9RE8ftTFQSN8h3jIjxdsvsuLOl6A9wQMtQ"
+          }
+  - name: Mfa_challenge_request_failed_3060
+    request:
+      url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+      method: POST
+      params:
+        - name: otp
+          value: 1234p
+          type: query
+          disabled: true
+        - name: token
+          value: sd
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "159374"
+          - name: challenge_token
+            value: eewe
+            disabled: true
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Wed, 04 Mar 2026 03:56:38 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "158"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3060,
+                  "error_type": "AUTH_ERROR",
+                  "error_message": "Invalid or expired OTP provided for MFA challenge, please try again."
+              }
+          }
+  - name: 2FA_COMPLETION_TEST
+    request:
+      url: "{{local_base_url}}/auth/verify-mfa/challenge/"
+      method: POST
+      params:
+        - name: otp
+          value: "755710"
+          type: query
+          disabled: true
+        - name: token
+          value: sd
+          type: query
+          disabled: true
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "234235"
+          - name: ""
+            value: eewe
+            disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "1721"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "97"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "97"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Reset
+          value: "10"
+        - name: date
+          value: Wed, 29 Apr 2026 02:31:49 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "134"
+        - name: X-Kong-Proxy-Latency
+          value: "0"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: b956bc2b8ddf7c7724e1bc56c2a39e2d
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "user": {
+                  "id": "219f8e49-45da-4f1f-90c3-4bb5c71134aa",
+                  "email": "netflix@relyfinancials.cloud",
+                  "account_type": "STANDARD",
+                  "grade": 1,
+                  "role": "user"
+              },
+              "access_token": {
+                  "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWx5LmlkZW50aXR5Iiwic3ViIjoiMjE5ZjhlNDktNDVkYS00ZjFmLTkwYzMtNGJiNWM3MTEzNGFhIiwiYXVkIjoicmVseS5hcGkiLCJ0ZW5hbnRfaWQiOiIyOWY0NGQ1Ni0yN2U1LTQ5YjYtOGM5NS0wYWZkNGY1MzRhMjgiLCJqdGkiOiI4NmNlMDkwZS0wNGYyLTRjZWMtYjBlMy1iYjNmNzlhYTcxODQiLCJzZXNzaW9uX2lkIjoiNTc5ZWNiOTgtNTAzYy00ODNkLWIzYmItOTQ2NGQ1Nzc3YjE4IiwiZGV2aWNlX2lkIjoiYjVhZDU3ZjItOTNlYi00NmQ1LWIyNWYtZWFlNmNkN2M5ZThkIiwic2NvcGUiOlsicHJvZmlsZTpyZWFkIiwicHJvZmlsZTp1cGRhdGUiLCJ3YWxsZXQ6Y3JlYXRlIiwid2FsbGV0OnJlYWQiLCJ3YWxsZXQ6YmFsYW5jZTpyZWFkIiwid2FsbGV0OnN0YXRlbWVudDpyZWFkIiwidHJhbnNmZXI6cXVvdGUiLCJ0cmFuc2ZlcjpjcmVhdGUiLCJ0cmFuc2ZlcjpyZWFkIiwidHJhbnNmZXI6Y2FuY2VsIiwidHJhbnNhY3Rpb246cmVhZCIsInRyYW5zYWN0aW9uOmhpc3Rvcnk6cmVhZCIsInRyYW5zYWN0aW9uOnJlY2VpcHQ6cmVhZCIsImNhc2hfaW46Y3JlYXRlIiwiY2FzaF9vdXQ6Y3JlYXRlIiwiYmFua19hY2NvdW50OmxpbmsiLCJiYW5rX2FjY291bnQ6cmVhZCIsImNhcmQ6bGluayIsImNhcmQ6cmVhZCIsImJlbmVmaWNpYXJ5OmNyZWF0ZSIsImJlbmVmaWNpYXJ5OnJlYWQiLCJub3RpZmljYXRpb246cmVhZCJdLCJ0b2tlbl90eXBlIjoic2Vzc2lvbiIsImlhdCI6MTc3NzQyOTkxMCwiZXhwIjoxNzc3NDMwMjEwfQ.rD7a1wWg8ZUlXSW6xlB7Q97gNqEa3dVVxyrB4o_H6J5ox_qf4Y-DljF_JuxWQeylVzefwjmyTokH8WYT4V3O75cAPYW44pRMnDmKLOMpbitoNe8HCcVxxjYnZ9fTdOyg4DiSCF-nMqL9TW7TdgVra5Wa-7-i0_xJU47yoxk2xZi_dkzX1ARAEyJ17Il_VkzcIAdwXOumyoc49hVcFwIwpc2P9H4p3F3o-NEBaVCW-qz_EUt7vJd0DaQXCLEJAm2tIP48Imh8bnGAEvvJRSHx5nGmol2hZOwjaQv506b941MFmYf2DXj-yAccuJEw1cBBUXJJJd3XS3nMk6HmqA4V1Q",
+                  "exp": "2026-04-29T02:36:50.591514Z"
+              },
+              "refresh_token": "LfOeTFns1W4kKdOUOKEPptp49G4F9rzo5gF4vm13LW_JHi_WUzCTnWBCZ4jRcaWtXQFm1hS8TVZiQbSfGNgs1g"
+          }

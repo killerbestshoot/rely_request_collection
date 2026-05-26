@@ -1,0 +1,196 @@
+info:
+  name: REGISTER_SERVICE
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{local_base_url}}/identity/auth/services/register/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: name
+        value: RELY_WALLETS_SERVICE
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: REGISTER_SERVICE
+    request:
+      url: http://127.0.0.1:8001/auth/services/register/
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: name
+            value: wallet-service
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Date
+          value: Sat, 21 Mar 2026 03:38:12 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "242"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "service_id": "76fc8414-e4d1-40ac-a6b9-3850fa3d1ca1",
+                  "client_id": "VLZSsh-VZGSDdGpHrSf_BmbKP7GWnFMDqH9LCQctiFQ",
+                  "client_secret": "YinYn-rPsPnSwt1uIF1YAjQltVYMOHraAr3ziC-EZgBOl9rmjqHFjTmvGLOTg7k-e6YEfPvyATdgRZQ0siU7iA"
+              }
+          }
+  - name: REGISTER_SERVICE_dash
+    request:
+      url: "{{local_base_url}}/auth/services/register/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: name
+            value: RELY_DASHBOARD_SERVICE
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "242"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "97"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "97"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Reset
+          value: "30"
+        - name: date
+          value: Fri, 01 May 2026 03:26:30 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "1315"
+        - name: X-Kong-Proxy-Latency
+          value: "2"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 2b6a6a5d4b613e35e2fd8a60f8977204
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "service_id": "a84e63c3-a75d-404f-bdb9-8ccd08d2ce99",
+                  "client_id": "27Odb0r9LJ1Yo_YtWQUGxIiyL6f6arLWTYcaya6RQS8",
+                  "client_secret": "bUMW5EtPL1FPE1vBQn57Gc-nSfN3ay_YvK8FYNs6b_igQvzzbChxI8EK0WDSAgs1a7w6tuVPpXp52SwDT63QmQ"
+              }
+          }
+  - name: REGISTER_SERVICE
+    request:
+      url: "{{local_base_url}}/auth/services/register/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: name
+            value: RELY_USER_SERVICE
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "242"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Reset
+          value: "40"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: date
+          value: Mon, 04 May 2026 19:44:20 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "1268"
+        - name: X-Kong-Proxy-Latency
+          value: "4"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 67c1e45b088578167e68866156b3f34b
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "service_id": "575fdcc0-6a64-4171-9f27-605764eda819",
+                  "client_id": "tUVUAX63t8SP3MKjfZj3GPYTDs-d7KQWx02Rg5WS848",
+                  "client_secret": "xQyjebHSyhyqPP4BJ98DffyVcPcBricwjH8DimFeAaKb-hnCvXaPJyN9ho7GvKgF-Lsow83eHoG2TeE_oJW8OQ"
+              }
+          }

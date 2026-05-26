@@ -1,0 +1,32 @@
+info:
+  name: VALIDATE_TRANFER
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: http://127.0.0.1:8004/v1/wallets/internal/validate-transfer/
+  body:
+    type: form-urlencoded
+    data:
+      - name: sender_wallet_id
+        value: 6fdebb85-a6a0-4e49-b884-2cc007ee3534
+      - name: receiver_wallet_id
+        value: 4691645e-ef8e-44da-949f-0720517267b8
+      - name: amount
+        value: "10899"
+      - name: transaction_type
+        value: tiered
+      - name: currency
+        value: HTG
+      - name: initiated_by
+        value: 6fdebb85-a6a0-4e49-b884-2cc007ee3534
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

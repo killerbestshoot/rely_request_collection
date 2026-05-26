@@ -1,0 +1,72 @@
+info:
+  name: UPLOAD_USER_PHOTO
+  type: http
+  seq: 16
+
+http:
+  method: POST
+  url: "{{live_base_url}}/v1/user/add/profile/"
+  body:
+    type: multipart-form
+    data:
+      - name: profile_photo
+        type: file
+        value:
+          - postman-cloud:///1f04daa2-cfa0-4fd0-864f-b87aab644248
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: UPLOAD_USER_PHOTO
+    request:
+      url: "{{live_base_url}}/v1/user/add/profile/"
+      method: POST
+      body:
+        type: multipart-form
+        data:
+          - name: profile_photo
+            type: file
+            value:
+              - postman-cloud:///1f04daa2-cfa0-4fd0-864f-b87aab644248
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Server
+          value: nginx/1.22.1
+        - name: Date
+          value: Sun, 22 Jun 2025 04:03:34 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "118"
+        - name: Connection
+          value: keep-alive
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: Strict-Transport-Security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+              "message": "Profile photo uploaded successfully ✅",
+              "minio_url": "/relytransfer/ed9c306c7bda48e6aa92f80f886a8f6a.jpg"
+          }

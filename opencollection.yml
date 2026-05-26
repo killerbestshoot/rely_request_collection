@@ -1,0 +1,199 @@
+opencollection: 1.0.0
+
+info:
+  name: Rely API v1.1
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: ""
+  variables:
+    - name: local_base_url
+      value: https://auth.relyfinancials.cloud/v1
+    - name: live_base_url
+      value: https://api.qmoney.tech
+    - name: userpass
+      value: Nance_1998
+    - name: usermail
+      value: nancejean998@gmail.com
+    - name: access_token
+      value: https://lively-water-801954.postman.co/workspace/71a5b1a8-5cd4-42bd-88fb-bc295a037d24/environment/34675272-b956a11e-8522-427a-9e09-06bf8a466304?action=share&source=copy-link&creator=34675272
+
+docs:
+  content: |-
+    ## Rely API v1.1 – Team Documentation
+
+    **Workspace:** [My Workspace](https://workspace/71a5b1a8-5cd4-42bd-88fb-bc295a037d24)  
+    **Collection:** [Rely API v1.1](https://collection/34675272-1ba1e522-f279-42e7-a2c3-5a6e6dab8a8c)  
+    **Recommended environment:** [Rely testing environement](https://environment/34675272-b956a11e-8522-427a-9e09-06bf8a466304)
+
+    ### Overview
+
+    This collection contains requests for the **Rely** API (v1.1). It is intended for local/dev testing and can be executed with environment variables for base URLs and credentials.
+
+    ### Base URL
+
+    Use the environment variable below (preferred) to keep requests portable across environments:
+
+    - `{{local_base_url}}`
+        
+
+    Example:
+
+    - `{{local_base_url}}/v1/...`
+        
+
+    > Note: Some request-level descriptions may reference older paths (e.g. `/v1/register/`). Treat the **request URL configured in Postman** as the source of truth. 
+      
+
+    ### Authentication
+
+    Authentication varies by endpoint. Common patterns:
+
+    - **Bearer token** (when required):
+        
+        ```
+          Authorization: Bearer {{access_token}}
+        
+         ```
+        
+
+    If an endpoint requires auth and you receive `401/403`, ensure your active environment has a valid token (e.g. `{{access_token}}` or `{{userToken}}`) and that the request’s Authorization tab is configured accordingly.
+
+    ### How to run this collection
+
+    - Use **Collection Runner** in Postman to run the full flow or selected folders/requests.
+        
+
+    **Run in Postman button (embed):**
+
+    ``` bash
+    <a class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; href="https://god.gw.postman.com/run-collection/34675272-1ba1e522-f279-42e7-a2c3-5a6e6dab8a8c">
+      <img class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; src="https://run.pstmn.io/button.svg" />
+    </a>
+
+     ```
+
+    ### How to import this collection
+
+    - If you have access to the workspace, open the collection directly: [Rely API v1.1](https://collection/34675272-1ba1e522-f279-42e7-a2c3-5a6e6dab8a8c)
+        
+    - Or export/import via Postman UI: **Collection → Export** (JSON) then **Import**.
+        
+
+    ---
+
+    ## Endpoints
+
+    ### 1) Registration
+
+    **Request:** [registration](https://request/34675272-c9210419-b737-4e17-a386-366817e1daf3)
+
+    - **Method:** `POST`
+        
+    - **URL:** `{{local_base_url}}/v1/identity/auth/register/`
+        
+    - **Purpose:** Registers a new user in the system.
+        
+
+    #### Required parameters
+
+    **Body (x-www-form-urlencoded):**
+
+    - `username` (string) – must be unique
+        
+    - `email` (string) – must be unique
+        
+    - `password` (string)
+        
+    - `account_type` (string) – e.g. `standard`
+        
+    - `user_gender` (string) – e.g. `male`
+        
+
+    > Variables used by this request: 
+      
+
+    - `{{local_base_url}}`
+        
+    - `{{usermail}}`
+        
+    - `{{userpass}}`
+        
+
+    #### Example request
+
+    ``` http
+    POST {{local_base_url}}/v1/identity/auth/register/
+    Content-Type: application/x-www-form-urlencoded
+    username=El_profsor011&email={{usermail}}&password={{userpass}}&account_type=standard&user_gender=male
+
+     ```
+
+    #### Example responses
+
+    This request has saved examples (useful for documentation and mocks):
+
+    - Success example: [registration_succes](https://example/34675272-33bef4d5-cdba-4a1f-90fe-29a1b0d5b5ae)
+        
+    - Error example: [registration_error_mossing_field](https://example/34675272-c294a466-07be-4575-8cc0-a820d6d2f9d4)
+        
+
+    Also observed response from a live call (example of a conflict when email already exists):
+
+    - **Status:** `409 Conflict`
+        
+    - **Body (shape):**
+        
+        ``` json
+          {
+            "success": false,
+            "error": {
+              "error_code": 2001,
+              "error_type": "REGISTRATION_ERROR",
+              "error_message": "A user with email '...' already exists"
+            }
+          }
+        
+         ```
+        
+
+    #### Status codes
+
+    - `201 Created` – user created successfully (expected)
+        
+    - `400 Bad Request` – missing/invalid fields (see saved error example)
+        
+    - `409 Conflict` – username/email already exists (commonly returned)
+        
+
+    #### Notes
+
+    - `username` and `email` must be unique.
+        
+    - If you are testing repeatedly, change `username`/`email` or generate them.
+        
+
+    ---
+
+    ## Usage notes / rate limits
+
+    - No rate limit information is currently documented for this API in the collection. If your backend enforces limits, document them here once known.
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

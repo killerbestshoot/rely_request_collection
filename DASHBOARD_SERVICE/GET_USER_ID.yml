@@ -1,0 +1,80 @@
+info:
+  name: GET_USER_ID
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{local_base_url}}/identity/auth/internal/retreive/user-id/killerbestshoot@gmail.com/"
+  auth:
+    type: basic
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: un_existant_service
+    request:
+      url: "{{local_base_url}}/identity/auth/internal/retreive/user-id/killerbestshoot@gmail.com/"
+      method: GET
+    response:
+      status: 503
+      statusText: Service Unavailable
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Sun, 24 May 2026 07:04:20 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "1859"
+        - name: connection
+          value: keep-alive
+        - name: x-ratelimit-remaining-minute
+          value: "99"
+        - name: ratelimit-limit
+          value: "100"
+        - name: ratelimit-remaining
+          value: "99"
+        - name: ratelimit-reset
+          value: "40"
+        - name: x-ratelimit-limit-minute
+          value: "100"
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "30"
+        - name: x-kong-proxy-latency
+          value: "1"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: baeaf37e933e451b0722205507780c20
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "success": false,
+            "error": {
+              "error_code": 10013,
+              "error_type": "DOWNSTREAM_SERVICE_NOT_FOUND",
+              "error_message": "Service client with the provided ID was not found or is inactive. Please contact support at devlopper-support@relyfinancials.com or visit https://www.relyfinancials.com/support/api for assistance."
+            },
+            "error_trace": "Traceback (most recent call last):\n  File \"/app/identity/accounts/services/auth/authentification.py\", line 160, in authenticate_service\n    client = ServiceClient.objects.get(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/django/db/models/manager.py\", line 87, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/django/db/models/query.py\", line 639, in get\n    raise self.model.DoesNotExist(\nidentity.accounts.models.ServiceClient.ServiceClient.DoesNotExist: ServiceClient matching query does not exist.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/rest_framework/views.py\", line 512, in dispatch\n    response = handler(request, *args, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/identity/accounts/views/internal_user_lookup.py\", line 13, in get\n    RelyJWTAuthentication.authenticate_service(request)\n  File \"/app/identity/accounts/services/auth/authentification.py\", line 163, in authenticate_service\n    raise ServiceNotFoundError(\nerrors.exceptions.data_errors.ServiceNotFoundError: Service client with the provided ID was not found or is inactive. Please contact support at devlopper-support@relyfinancials.com or visit https://www.relyfinancials.com/support/api for assistance.\n"
+          }

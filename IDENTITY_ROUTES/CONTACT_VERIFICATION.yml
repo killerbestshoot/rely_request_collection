@@ -1,0 +1,338 @@
+info:
+  name: CONTACT_VERIFICATION
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{local_base_url}}/identity/auth/verify-user-contact/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: contact_type
+        value: business
+        disabled: true
+      - name: contact_method
+        value: phone
+        disabled: true
+      - name: phone_number
+        value: "+528148723812"
+        disabled: true
+      - name: pository
+        value: "True"
+        disabled: true
+      - name: verification_otp
+        value: "567368"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: CONTACT_VERIFICATION
+    request:
+      url: "{{local_base_url}}/auth/verify-user-contact/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "+528148723812"
+            disabled: true
+          - name: pository
+            value: "True"
+            disabled: true
+          - name: verification_otp
+            value: "673216"
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "104"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Reset
+          value: "60"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: date
+          value: Fri, 13 Mar 2026 07:27:59 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "56"
+        - name: X-Kong-Proxy-Latency
+          value: "4"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: d84dd50f3d3d5f3d3aa7a735ceefa82e
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3052,
+                  "error_type": "AUTH_ERROR",
+                  "error_message": "otp is expired"
+              }
+          }
+  - name: OTP_EXPIRED
+    request:
+      url: "{{local_base_url}}/auth/verify-user-contact/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "+528148723812"
+            disabled: true
+          - name: pository
+            value: "True"
+            disabled: true
+          - name: verification_otp
+            value: "554567"
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "117"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "86"
+        - name: RateLimit-Reset
+          value: "17"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "86"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Sat, 14 Mar 2026 00:37:43 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "396"
+        - name: X-Kong-Proxy-Latency
+          value: "1"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: cf32607cd5966e7e52ea2e63ccd0134d
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3052,
+                  "error_type": "OTP_EXPIRED",
+                  "error_message": "The provide OTP is expired"
+              }
+          }
+  - name: OTP_INVALID
+    request:
+      url: "{{local_base_url}}/auth/verify-user-contact/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "+528148723812"
+            disabled: true
+          - name: pository
+            value: "True"
+            disabled: true
+          - name: verification_otp
+            value: "554567"
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "103"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "96"
+        - name: RateLimit-Reset
+          value: "33"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "96"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Sat, 14 Mar 2026 00:39:26 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "29"
+        - name: X-Kong-Proxy-Latency
+          value: "7"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: e061797beb299c7e6dac3f4e0dbe055d
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3051,
+                  "error_type": "OTP_INVALID",
+                  "error_message": "Inavalid OTP"
+              }
+          }
+  - name: Contact verified successfully.
+    request:
+      url: "{{local_base_url}}/auth/verify-user-contact/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "+528148723812"
+            disabled: true
+          - name: pository
+            value: "True"
+            disabled: true
+          - name: verification_otp
+            value: "790836"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "70"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Reset
+          value: "44"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Sat, 14 Mar 2026 00:40:15 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "56"
+        - name: X-Kong-Proxy-Latency
+          value: "5"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: a3ecf2186cc38b1a7bbac128e723002c
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "message": "Contact verified successfully."
+              }
+          }

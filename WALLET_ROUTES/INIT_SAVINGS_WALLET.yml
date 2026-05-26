@@ -1,0 +1,83 @@
+info:
+  name: INIT_SAVINGS_WALLET
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{my_cloud_url}}/wallets/wallets/user/create/savings/wallet/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: label
+        value: kob vakans
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+runtime:
+  variables:
+    - name: my_cloud_url
+      value: http://192.168.1.136:8000/v1
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: SYSTEM_INTERNAL_ERROR
+    request:
+      url: "{{my_cloud_url}}/wallets/wallets/user/wallet/init/savings/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: label
+            value: kob vakans
+    response:
+      status: 500
+      statusText: Internal Server Error
+      headers:
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "113"
+        - name: connection
+          value: keep-alive
+        - name: date
+          value: Tue, 26 May 2026 00:41:50 GMT
+        - name: server
+          value: uvicorn
+        - name: vary
+          value: Accept
+        - name: allow
+          value: POST, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "922"
+        - name: x-kong-proxy-latency
+          value: "0"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: f3c4e8422c32e372b4f3aa7ac55ac210
+      body:
+        type: json
+        data: |-
+          {
+            "success": false,
+            "error": {
+              "error_code": 3099,
+              "error_type": "SYSTEM_ERROR",
+              "error_message": "Internal server error"
+            }
+          }

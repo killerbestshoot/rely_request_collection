@@ -1,0 +1,22 @@
+info:
+  name: SET_USER_LANGUAGE
+  type: http
+  seq: 22
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/me/preferred-language/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: preferred_language
+        value: ht
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

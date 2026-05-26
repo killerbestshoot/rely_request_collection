@@ -1,0 +1,21 @@
+info:
+  name: test_login
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://192.168.1.136:8000/v1/identity/auth/login/
+  body:
+    type: form-urlencoded
+    data:
+      - name: email
+        value: nancejean998@gmail.com
+      - name: password
+        value: Nance_1998
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

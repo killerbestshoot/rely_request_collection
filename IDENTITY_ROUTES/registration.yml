@@ -1,0 +1,305 @@
+info:
+  name: registration
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/register/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: username
+        value: Nance_1998
+      - name: email
+        value: "{{usermail}}"
+      - name: password
+        value: "{{userpass}}"
+      - name: account_type
+        value: standard
+      - name: user_gender
+        value: male
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const res = res.getBody();
+
+        bru.setEnvVar(
+            "registration_token",
+            res?.result?.verification?.registration_token?.token || ""
+        );
+
+        bru.setEnvVar(
+            "challenge_id",
+            res?.result?.verification?.challenge_id || ""
+        );
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: registration_succes
+    request:
+      url: "{{local_base_url}}/v1/identity/auth/register/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: username
+            value: El_profsor011
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+          - name: account_type
+            value: standard
+          - name: user_gender
+            value: male
+    response:
+      status: 201
+      statusText: Created
+      headers:
+        - name: Server
+          value: nginx
+        - name: Date
+          value: Mon, 16 Feb 2026 20:49:57 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "194"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Reset
+          value: "4"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: Vary
+          value: Accept, Cookie
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "448"
+        - name: X-Kong-Proxy-Latency
+          value: "2"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 1f090e727387950fdd0a04345f712471
+        - name: Strict-Transport-Security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "message": "Registration successful",
+                  "user_id": "0a70b2a6-b244-4a58-ac7b-b49d5ffff70b",
+                  "email": "elprofsor233@gmail.com",
+                  "status": "account_created awaiting_verification"
+              }
+          }
+  - name: registration_error_mossing_field
+    request:
+      url: "{{local_base_url}}/v1/identity/auth/register/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: username
+            value: El_profsor011
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+          - name: account_type
+            value: standard
+            disabled: true
+          - name: user_gender
+            value: male
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Server
+          value: nginx
+        - name: Date
+          value: Mon, 16 Feb 2026 21:00:09 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "65"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "98"
+        - name: RateLimit-Reset
+          value: "51"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "98"
+        - name: Vary
+          value: Accept, Cookie
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "23"
+        - name: X-Kong-Proxy-Latency
+          value: "2"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: d6aaee2e32d0c532b9f38b22c739ce7e
+        - name: Strict-Transport-Security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": "Missing required fields: account_type"
+          }
+  - name: registration_failed_conflict_409_http_2001_rely_error
+    request:
+      url: "{{local_base_url}}/v1/identity/auth/register/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: username
+            value: El_profsor011
+          - name: email
+            value: "{{usermail}}"
+          - name: password
+            value: "{{userpass}}"
+          - name: account_type
+            value: standard
+          - name: user_gender
+            value: male
+    response:
+      status: 409
+      statusText: Conflict
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "156"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Reset
+          value: "6"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: date
+          value: Sat, 28 Feb 2026 02:06:54 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "75"
+        - name: X-Kong-Proxy-Latency
+          value: "2"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 201e6d34107e936eb9dd8c1e14aa680d
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 2001,
+                  "error_type": "REGISTRATION_ERROR",
+                  "error_message": "A user with email 'elprofsor233@gmail.com' already exists."
+              }
+          }
+
+docs: |-
+  ### Registration – Create Customer User
+
+  Registers a new **customer** user in the system.
+
+  **URL**  
+  `POST {{local_base_url}}/v1/register/`
+
+  **Method**  
+  `POST`
+
+  **Required body (x-www-form-urlencoded)**
+
+  - `username` – Customer username (must be unique)
+      
+  - `email` – Customer email address (must be unique)
+      
+  - `password` – Account password
+      
+  - `user_gender` – Gender of the user (e.g. `MALE, FEMALE, OTHER`)
+      
+  - `user_type` – Type of user (e.g. `customer or business`)
+      
+
+  **Typical successful response**
+
+  - **Status:** `201 Created`
+      
+  - **Body (JSON):**
+      
+      - `success` – Boolean, `true` when the user is created
+          
+      - `user.mail` – Email of the created user
+          
+      - `message` – Human‑readable confirmation message (e.g. `"User created successfully. ✅"`)
+          
+
+  **Notes**
+
+  - `username` and `email` **must be unique**; registration will fail if either already exists.

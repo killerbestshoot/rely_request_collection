@@ -1,0 +1,25 @@
+info:
+  name: TOKEN_INTROSPECT
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/token/introspect/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: identifier
+        value: "{{usermail}}"
+      - name: identifier
+        value: "+528148723812"
+        disabled: true
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

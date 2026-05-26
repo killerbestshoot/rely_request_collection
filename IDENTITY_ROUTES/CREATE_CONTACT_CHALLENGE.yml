@@ -1,0 +1,179 @@
+info:
+  name: CREATE_CONTACT_CHALLENGE
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{local_base_url}}/identity/auth/create-contact/mfa/challenge/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: contact_type
+        value: business
+        disabled: true
+      - name: contact_method
+        value: phone
+        disabled: true
+      - name: phone_number
+        value: "+528148723809"
+      - name: pository
+        value: "True"
+        disabled: true
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: CREATE_CONTACT_CHALLENGE
+    request:
+      url: "{{local_base_url}}/auth/create-contact/mfa/challenge/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "+528148723809"
+          - name: pository
+            value: "True"
+            disabled: true
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "98"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "98"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "98"
+        - name: RateLimit-Reset
+          value: "30"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: date
+          value: Fri, 13 Mar 2026 07:25:30 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "55"
+        - name: X-Kong-Proxy-Latency
+          value: "4"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: c927b822326ca96b3ee78d287c019e1c
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "otp": "673216",
+                  "contact_method": "phone",
+                  "phone_number": "+528148723809"
+              }
+          }
+  - name: PHONE_NUMBER_NOT_FOUND
+    request:
+      url: "{{local_base_url}}/auth/create-contact/mfa/challenge/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: contact_type
+            value: business
+            disabled: true
+          - name: contact_method
+            value: phone
+            disabled: true
+          - name: phone_number
+            value: "{{phone_number}}"
+          - name: pository
+            value: "True"
+            disabled: true
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "137"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Remaining
+          value: "98"
+        - name: RateLimit-Reset
+          value: "11"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "98"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: date
+          value: Sat, 14 Mar 2026 00:40:49 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "55"
+        - name: X-Kong-Proxy-Latency
+          value: "4"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 14b4814e9b124300641ce752d92da215
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3058,
+                  "error_type": "PHONE_NUMBER_NOT_FOUND",
+                  "error_message": "No matching phone number was found."
+              }
+          }

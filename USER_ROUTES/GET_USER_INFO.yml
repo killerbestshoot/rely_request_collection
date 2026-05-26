@@ -1,0 +1,135 @@
+info:
+  name: GET_USER_INFO
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{local_base_url}}/user/u/profile/personal-info/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: GET_USER_INFO
+    request:
+      url: http://127.0.0.1:8002/user/me/
+      method: GET
+      body:
+        type: form-urlencoded
+        data:
+          - name: token
+            value: "{{access_token}}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Sat, 28 Mar 2026 02:43:58 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.13.9
+        - name: Content-Type
+          value: application/json
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "494"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "active": true,
+              "data": {
+                  "user_id": "ae73fde9-f128-4f43-aa87-830f9eb38309",
+                  "scope": [
+                      "transfer:create"
+                  ],
+                  "scopes": [
+                      "transfer:create"
+                  ],
+                  "roles": [],
+                  "token_type": "session",
+                  "client_id": null,
+                  "exp": 1774665944,
+                  "iat": 1774665644,
+                  "nbf": null,
+                  "jti": "ad5c1dde-12ab-45ff-a397-fd5fe2ba29b9",
+                  "iss": "rely.identity",
+                  "aud": "rely.mobile",
+                  "tenant_id": "664725dd-00b2-4d2a-a718-a65b5740e7ab",
+                  "session_id": "8c5d5968-e3c1-4e89-9e2c-01db51f3ebbe",
+                  "account_status": "active",
+                  "kyc_status": null
+              }
+          }
+  - name: retrive_user_data
+    request:
+      url: "{{local_base_url}}/user/u/profile/personal-info/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Sun, 24 May 2026 06:17:32 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "343"
+        - name: connection
+          value: keep-alive
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, PATCH, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "350"
+        - name: x-kong-proxy-latency
+          value: "0"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: 9c1d0051ec4720399f89d51ba427d46e
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "user_id": "99bc74ea-8f0f-475a-90df-1f357174de9e",
+            "first_name": "",
+            "last_name": "",
+            "middle_name": null,
+            "date_of_birth": null,
+            "gender": null,
+            "nationality": null,
+            "place_of_birth": null,
+            "country_of_birth": null,
+            "is_pep": false,
+            "is_us_person": false,
+            "is_completed": false,
+            "created_at": "2026-05-21T19:44:26.947278Z",
+            "updated_at": "2026-05-21T19:44:26.948367Z"
+          }

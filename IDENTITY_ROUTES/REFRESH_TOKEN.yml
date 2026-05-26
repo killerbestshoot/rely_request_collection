@@ -1,0 +1,30 @@
+info:
+  name: REFRESH_TOKEN
+  type: http
+  seq: 21
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/refresh-token/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: username
+        value: Nance_1998
+      - name: email
+        value: "{{usermail}}"
+      - name: password
+        value: "{{userpass}}"
+      - name: account_type
+        value: standard
+      - name: user_gender
+        value: male
+  auth:
+    type: bearer
+    token: "{{refresh_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

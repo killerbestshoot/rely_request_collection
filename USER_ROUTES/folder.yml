@@ -1,0 +1,7 @@
+info:
+  name: USER_ROUTES
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

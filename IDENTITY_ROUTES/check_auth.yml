@@ -1,0 +1,232 @@
+info:
+  name: check_auth
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: "{{local_base_url}}/auth/me/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Status code is 200", function () {
+          expect(res.getStatus()).to.equal(200);
+        });
+
+        test("Response is JSON", function () {
+          pm.response.to.be.json;
+        });
+
+        test("Response has expected auth fields", function () {
+          const jsonData = res.getBody();
+          expect(jsonData).to.be.an("object");
+
+          // allow either snake_case or camelCase depending on backend
+          expect(
+            jsonData,
+            "Expected user id in response (data.user_id or data.userId)"
+          ).to.satisfy(function (obj) {
+            return (
+              (obj.data && typeof obj.data.user_id === "string" && obj.data.user_id.length > 0) ||
+              (obj.data && typeof obj.data.userId === "string" && obj.data.userId.length > 0)
+            );
+          });
+
+          // token-related fields commonly returned by /auth/me
+          if (jsonData.data) {
+            if (jsonData.data.token_type !== undefined) {
+              expect(jsonData.data.token_type).to.be.a("string");
+            }
+            if (jsonData.data.scope !== undefined) {
+              expect(jsonData.data.scope).to.be.an("array");
+            }
+            if (jsonData.data.scopes !== undefined) {
+              expect(jsonData.data.scopes).to.be.an("array");
+            }
+          }
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: check_auth_3015_token_signature_invalid
+    request:
+      url: "{{local_base_url}}/v1/identity/auth/me/"
+      method: GET
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "118"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Reset
+          value: "2"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "97"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "97"
+        - name: date
+          value: Sat, 28 Feb 2026 02:13:57 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "18"
+        - name: X-Kong-Proxy-Latency
+          value: "3"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: a0a57f585356357fcaeae94277381a6d
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3015,
+                  "error_type": "AUTH_FAILED",
+                  "error_message": "Token signature is invalid."
+              }
+          }
+  - name: check_auth_ok
+    request:
+      url: "{{local_base_url}}/v1/identity/auth/me/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "15"
+        - name: Connection
+          value: keep-alive
+        - name: RateLimit-Reset
+          value: "14"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: date
+          value: Sat, 28 Feb 2026 02:15:45 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "185"
+        - name: X-Kong-Proxy-Latency
+          value: "1"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 2d5d5b5a95e04b33e1e23047cb54b100
+      body:
+        type: json
+        data: |-
+          {
+              "status": "ok"
+          }
+  - name: check_auth
+    request:
+      url: "{{local_base_url}}/auth/me/"
+      method: GET
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "121"
+        - name: Connection
+          value: keep-alive
+        - name: X-RateLimit-Remaining-Minute
+          value: "99"
+        - name: X-RateLimit-Limit-Minute
+          value: "100"
+        - name: RateLimit-Remaining
+          value: "99"
+        - name: RateLimit-Limit
+          value: "100"
+        - name: RateLimit-Reset
+          value: "13"
+        - name: date
+          value: Thu, 30 Apr 2026 01:01:46 GMT
+        - name: server
+          value: uvicorn
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: GET, HEAD, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "407"
+        - name: X-Kong-Proxy-Latency
+          value: "4"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: b47c6423075f5472c01cdd3330a2ba52
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 1012,
+                  "error_type": "TOKEN_INVALID",
+                  "error_message": "Token missing subject claim."
+              }
+          }

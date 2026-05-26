@@ -1,0 +1,110 @@
+info:
+  name: verify_reset_otp
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{local_base_url}}/auth/verify-reset-otp/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: otp
+        value: "913783"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: verify_reset_otp_3052_expired
+    request:
+      url: "{{local_base_url}}/auth/verify-reset-otp/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "123444"
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Tue, 03 Mar 2026 00:06:10 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "112"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 3052,
+                  "error_type": "AUTH_ERROR",
+                  "error_message": "Invalid or expired OTP"
+              }
+          }
+  - name: verify_reset_otp_200
+    request:
+      url: "{{local_base_url}}/auth/verify-reset-otp/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: otp
+            value: "913783"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Tue, 03 Mar 2026 00:41:37 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.14.0
+        - name: Content-Type
+          value: application/json
+        - name: Vary
+          value: Accept
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "679"
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "result": {
+                  "message": "OTP is valid",
+                  "temporary_access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJyZWx5LmlkZW50aXR5IiwiYXVkIjoicmVseS5tb2JpbGUiLCJleHAiOjE3NzI0OTkwOTYsInN1YiI6IjkzYTE2NjkzLWNiMmQtNDdkZi1iMTNiLTU4MTE5YzhlOTNmNCIsInR5cGUiOiJwYXNzd29yZF9yZXNldCIsInNjb3BlIjoicmVzZXQ6cGFzc3dvcmQifQ.OpSzV-hkF9Agwp7tOpBomBvA39floOL1fzeBJN_KOVytBxm_OE7ajOq_ABxhfvXToqKGe5WtDoDK7PaMCV-kFT75bfpsHDM7zWIBRZSOcRvcKrWjiky7JUUh45-ZiE_VB8UY1kRdcNoUXgQoS4WlJ67eymmovlOceDOo_4ma4i9m9qdMjABYUlXOcAMLTepqrO2xxn4-n2jY1qWP89DNWqhVcTektlcTSJMzlbdzTjpokKR5iJ_jldUjOSRQS5JEptFnEp1SfOr5AZUAxJsqSE6cZ09GRzdgsaiodKDFoC4qwKnjqRrkorz7nLqt4qr03d4cA_ywcmjFRVIy1OhyNQ",
+                  "status": 200
+              }
+          }

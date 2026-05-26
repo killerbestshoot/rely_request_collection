@@ -1,0 +1,70 @@
+info:
+  name: GET_WALLET
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{local_base_url}}/wallets/users/77661988-5ec6-4e0a-be81-58bc682a197a/details/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: wallet_77661988-5ec6-4e0a-be81-58bc682a197a_detail
+    request:
+      url: "{{local_base_url}}/wallets/users/77661988-5ec6-4e0a-be81-58bc682a197a/details/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Sun, 24 May 2026 06:53:39 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "153"
+        - name: connection
+          value: keep-alive
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "304"
+        - name: x-kong-proxy-latency
+          value: "1"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: 82d849507fd6832819b83156cdff1a2a
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "wallet_id": "77661988-5ec6-4e0a-be81-58bc682a197a",
+            "balance": "0.00",
+            "blocked_balance": "0.00",
+            "currency": "HTG",
+            "wallet_type": "SAVINGS",
+            "status": "active"
+          }

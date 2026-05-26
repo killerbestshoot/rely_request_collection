@@ -1,0 +1,7 @@
+info:
+  name: WALLET_ROUTES
+  type: folder
+  seq: 4
+
+request:
+  auth: inherit

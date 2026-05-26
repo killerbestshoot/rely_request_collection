@@ -1,0 +1,226 @@
+info:
+  name: preferences/notification/local_testing
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{local_base_url}}/user/u/preferences/notification/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: sms_enabled
+        value: "TRUE"
+      - name: push_enabled
+        value: "TRUE"
+      - name: transaction_received
+        value: "true"
+      - name: login_alert
+        value: "true"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: preferences/notification/2011_TOKEN_EXPIRED
+    request:
+      url: "{{dev_base_user_url}}u/preferences/notification/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: sms_enabled
+            value: "TRUE"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "138"
+        - name: Connection
+          value: keep-alive
+        - name: date
+          value: Wed, 06 May 2026 04:17:00 GMT
+        - name: server
+          value: uvicorn
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, PATCH, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "896"
+        - name: X-Kong-Proxy-Latency
+          value: "0"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: ce6ffd329a2dc236d333e66fac030018
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "error": {
+                  "error_code": 2011,
+                  "error_type": "TOKEN_EXPIRED",
+                  "error_message": "The provided token is invalid or has expired."
+              }
+          }
+  - name: preferences/notification/200_preference_created
+    request:
+      url: "{{dev_base_user_url}}u/preferences/notification/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: sms_enabled
+            value: "TRUE"
+          - name: push_enabled
+            value: "TRUE"
+          - name: transaction_received
+            value: "true"
+          - name: login_alert
+            value: "true"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "439"
+        - name: Connection
+          value: keep-alive
+        - name: date
+          value: Wed, 06 May 2026 04:30:14 GMT
+        - name: server
+          value: uvicorn
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, PATCH, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: X-Kong-Upstream-Latency
+          value: "1076"
+        - name: X-Kong-Proxy-Latency
+          value: "1"
+        - name: Via
+          value: kong/3.6.1
+        - name: X-Kong-Request-Id
+          value: 39803d02b542ed370863932e07f03a35
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "detail": "Notification preferences were successfully changed.",
+              "preferences": {
+                  "user_id": "fcc7d6a0-1804-4d9f-9883-598fc01129b6",
+                  "email_enabled": false,
+                  "sms_enabled": true,
+                  "push_enabled": true,
+                  "transaction_received": true,
+                  "payment_sent": false,
+                  "login_alert": true,
+                  "low_balance_alert": false,
+                  "suspicious_activity": false,
+                  "kyc_status_update": false,
+                  "created_at": "2026-05-05T04:15:50.112271Z",
+                  "updated_at": "2026-05-06T04:30:15.386888Z"
+              }
+          }
+  - name: user_pref
+    request:
+      url: "{{local_base_url}}/user/u/preferences/notification/"
+      method: PATCH
+      body:
+        type: form-urlencoded
+        data:
+          - name: sms_enabled
+            value: "TRUE"
+          - name: push_enabled
+            value: "TRUE"
+          - name: transaction_received
+            value: "true"
+          - name: login_alert
+            value: "true"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Sun, 24 May 2026 06:33:52 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "439"
+        - name: connection
+          value: keep-alive
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, PATCH, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "593"
+        - name: x-kong-proxy-latency
+          value: "1"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: d0d0ce346254a915d6a29c0265df770c
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "success": true,
+            "detail": "Notification preferences were successfully changed.",
+            "preferences": {
+              "user_id": "99bc74ea-8f0f-475a-90df-1f357174de9e",
+              "email_enabled": false,
+              "sms_enabled": true,
+              "push_enabled": true,
+              "transaction_received": true,
+              "payment_sent": false,
+              "login_alert": true,
+              "low_balance_alert": false,
+              "suspicious_activity": false,
+              "kyc_status_update": false,
+              "created_at": "2026-05-24T06:33:52.510635Z",
+              "updated_at": "2026-05-24T06:33:52.520414Z"
+            }
+          }

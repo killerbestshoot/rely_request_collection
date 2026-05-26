@@ -1,0 +1,191 @@
+info:
+  name: SET_WALLET_PIN
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{local_base_url}}/v1/wallet/set-pin/"
+  body:
+    type: form-urlencoded
+    data:
+      - name: pin
+        value: "0016"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200_SET_USER_PIN
+    request:
+      url: "{{local_base_url}}/v1/wallet/set-pin/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: pin
+            value: "0018"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Date
+          value: Sun, 22 Jun 2025 09:01:24 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.9
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "67"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": true,
+              "message": "PIN updated successfully.",
+              "status": 200
+          }
+  - name: 3014_SET_WALLET_EXPIRED_TOKEN
+    request:
+      url: "{{local_base_url}}/v1/wallet/set-pin/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: pin
+            value: "0014"
+    response:
+      status: 401
+      statusText: Unauthorized
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 19:07:36 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "145"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "[PIN SET] An error occurred while processing the request.",
+              "details": "The provided token is expired.",
+              "error_code": 3014
+          }
+  - name: 3032_SET_WALLET_PIN_CANNOT_BE_EMPTY
+    request:
+      url: "{{local_base_url}}/v1/wallet/set-pin/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: pin
+            value: ""
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 19:09:26 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "156"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "[PIN SET] An error occurred while setting the PIN.",
+              "details": "The 'pin' field is required and cannot be empty.",
+              "error_code": 3032
+          }
+  - name: 3031_SET_WALLET_PIN_MUST_BE_NUMERIC
+    request:
+      url: "{{local_base_url}}/v1/wallet/set-pin/"
+      method: POST
+      body:
+        type: form-urlencoded
+        data:
+          - name: pin
+            value: ERTY
+    response:
+      status: 400
+      statusText: Bad Request
+      headers:
+        - name: Date
+          value: Mon, 05 Jan 2026 19:11:33 GMT
+        - name: Server
+          value: WSGIServer/0.2 CPython/3.12.12
+        - name: Content-Type
+          value: application/json
+        - name: Allow
+          value: POST, OPTIONS
+        - name: X-Frame-Options
+          value: DENY
+        - name: Content-Length
+          value: "128"
+        - name: Vary
+          value: origin
+        - name: X-Content-Type-Options
+          value: nosniff
+        - name: Referrer-Policy
+          value: same-origin
+        - name: Cross-Origin-Opener-Policy
+          value: same-origin
+      body:
+        type: json
+        data: |-
+          {
+              "success": false,
+              "hint": "[PIN SET] An error occurred while setting the PIN.",
+              "details": "PIN must be numeric.",
+              "error_code": 3031
+          }
