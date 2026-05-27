@@ -16,6 +16,55 @@ http:
 
 runtime:
   scripts:
+    - type: before-request
+      code: |-
+        let deviceName = "Unknown";
+        let osName = "Unknown";
+        let osVersion = "Unknown";
+        let appName = "Bruno";
+        let arch = "Unknown";
+
+        try {
+          const os = require("os");
+
+          const platform = os.platform();
+          const platformNames = {
+            darwin: "macOS",
+            win32: "Windows",
+            linux: "Linux",
+          };
+
+          osName = platformNames[platform] || platform;
+          osVersion = os.release();
+          arch = os.arch();
+          deviceName = os.hostname() || `${osName} ${arch}`;
+        } catch (error) {
+          console.log("OS module unavailable:", error.message);
+
+          try {
+            const platform = req.getExecutionPlatform && req.getExecutionPlatform();
+            deviceName = platform ? `Bruno ${platform}` : "Bruno Client";
+          } catch (_) {
+            deviceName = "Bruno Client";
+          }
+        }
+
+        req.setHeaders({
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-Device-Name": deviceName,
+          "X-OS-Name": osName,
+          "X-OS-Version": osVersion,
+          "X-App-Name": appName,
+          "X-Device-Arch": arch,
+        });
+
+        console.log("Device headers attached:", {
+          deviceName,
+          osName,
+          osVersion,
+          appName,
+          arch,
+        });
     - type: after-response
       code: |-
         // parse the response to extract the access_token

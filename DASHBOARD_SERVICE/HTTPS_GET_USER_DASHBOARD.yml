@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{my_cloud_url}}/dashboard/users/initiate/"
+  url: "{{local_base_url}}/dashboard/users/initiate/"
   auth:
     type: bearer
     token: "{{access_token}}"

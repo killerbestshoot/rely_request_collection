@@ -24,9 +24,9 @@ request:
     - name: live_base_url
       value: https://api.qmoney.tech
     - name: userpass
-      value: Nance_1998
+      value: Bastien_199804
     - name: usermail
-      value: nancejean998@gmail.com
+      value: michelcell2026@gmail.com
     - name: access_token
       value: https://lively-water-801954.postman.co/workspace/71a5b1a8-5cd4-42bd-88fb-bc295a037d24/environment/34675272-b956a11e-8522-427a-9e09-06bf8a466304?action=share&source=copy-link&creator=34675272
 

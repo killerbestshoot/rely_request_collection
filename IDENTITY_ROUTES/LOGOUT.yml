@@ -4,9 +4,11 @@ info:
   seq: 18
 
 http:
-  method: GET
-  url: ""
-  auth: inherit
+  method: POST
+  url: "{{local_base_url}}/identity/auth/logout/"
+  auth:
+    type: bearer
+    token: "{{access_token}}"
 
 settings:
   encodeUrl: true

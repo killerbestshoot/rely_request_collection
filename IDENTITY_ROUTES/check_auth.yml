@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{local_base_url}}/auth/me/"
+  url: "{{local_base_url}}/identity/auth/me/"
   auth:
     type: bearer
     token: "{{access_token}}"
@@ -229,4 +229,60 @@ examples:
                   "error_type": "TOKEN_INVALID",
                   "error_message": "Token missing subject claim."
               }
+          }
+  - name: check_session
+    request:
+      url: "{{local_base_url}}/identity/auth/me/"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: server
+          value: nginx
+        - name: date
+          value: Wed, 27 May 2026 03:53:39 GMT
+        - name: content-type
+          value: application/json
+        - name: content-length
+          value: "15"
+        - name: connection
+          value: keep-alive
+        - name: x-ratelimit-remaining-minute
+          value: "99"
+        - name: ratelimit-limit
+          value: "100"
+        - name: ratelimit-remaining
+          value: "99"
+        - name: ratelimit-reset
+          value: "21"
+        - name: x-ratelimit-limit-minute
+          value: "100"
+        - name: vary
+          value: Accept
+        - name: allow
+          value: GET, HEAD, OPTIONS
+        - name: x-frame-options
+          value: DENY
+        - name: x-content-type-options
+          value: nosniff
+        - name: referrer-policy
+          value: same-origin
+        - name: cross-origin-opener-policy
+          value: same-origin
+        - name: x-kong-upstream-latency
+          value: "12"
+        - name: x-kong-proxy-latency
+          value: "0"
+        - name: via
+          value: kong/3.6.1
+        - name: x-kong-request-id
+          value: 3b95150eb0f8fb4f940be03a5caee174
+        - name: strict-transport-security
+          value: max-age=31536000; includeSubDomains
+      body:
+        type: json
+        data: |-
+          {
+            "status": "ok"
           }

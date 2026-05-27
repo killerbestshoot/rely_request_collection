@@ -5,12 +5,9 @@ info:
 
 http:
   method: POST
-  url: "{{my_cloud_url}}/wallets/user/init/"
+  url: "{{my_cloud_url}}/wallets/wallets/user/init/"
   body:
     type: form-urlencoded
-    data:
-      - name: label
-        value: vakans
   auth:
     type: bearer
     token: "{{access_token}}"
